@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  flyway:
+    schemas:
+      - news
+  datasource:
+    url: jdbc:postgresql://localhost:5433/rss_reader?currentSchema=news
+    username: postgres
+    password: root
+  jpa:
+    properties:
+      hibernate.temp.use_jdbc_metadata_defaults: false
+      ##hibernate.generate_statistics: true
+
+  batch:
+    job:
+      enabled: false
+    initialize-schema: always
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql: trace
+    org.zkoss: debug
