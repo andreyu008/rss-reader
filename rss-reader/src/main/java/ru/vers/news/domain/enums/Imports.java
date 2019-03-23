@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public enum Imports {
   UNKNOWN,
-  RSS,
-  HTML;
+  LENTA,
+  HABR;
 
 
   public static Imports from(String imports){

@@ -16,3 +16,20 @@ COMMENT ON COLUMN news.ref_import_rss.state IS 'Статус последней 
 COMMENT ON COLUMN news.ref_import_rss.full_name IS 'Наименование ';
 COMMENT ON COLUMN news.ref_import_rss.short_name IS 'Короткое имя';
 COMMENT ON COLUMN news.ref_import_rss.page IS 'Адрес страницы';
+
+
+insert into news.ref_import_rss
+values (1,
+        'Lenta.ru',
+        'CREATED',
+        'Lenta.ru : Новости',
+        'LENTA',
+        'http://lenta.ru/rss/news');
+
+insert into news.ref_import_rss
+values (2,
+        'habr.com',
+        'CREATED',
+        'habr.com : Новости',
+        'HABR',
+        'http://habrahabr.ru/rss/main');
