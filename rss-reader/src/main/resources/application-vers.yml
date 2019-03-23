@@ -19,6 +19,11 @@ spring:
       enabled: false
     initialize-schema: always
 
+imports:
+  scheduled:
+    enabled: true
+    cron: "* */1 * * * *"
+
 logging:
   level:
     org.hibernate.SQL: debug
