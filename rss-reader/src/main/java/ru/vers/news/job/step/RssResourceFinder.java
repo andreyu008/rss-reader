@@ -22,9 +22,8 @@ public class RssResourceFinder implements IRssResourceFinder {
     try {
       RefImportRss refImportRss = refRssService.findById(imports);
       String path = refImportRss.getPage();
-      UrlResource urlResource = new UrlResource(new URL(path));
-      return urlResource;
-    }catch (IOException e){
+      return new UrlResource(new URL(path));
+    } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
 

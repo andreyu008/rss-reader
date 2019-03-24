@@ -1,0 +1,11 @@
+<zk>
+  <window apply="org.zkoss.bind.BindComposer" closable="true"
+    viewModel="@id('vm') @init('ru.vers.news.web.mvvm.modal.ViewRssItemModalViewModel')"
+    hflex="1" vflex="1">
+    <caption label="@load(vm.item.title)"></caption>
+    <!--<style src="/widgets/miscellaneous/rss_reader/style.css" />-->
+    <html class="desc" content="@load(vm.item.description)"/>
+
+
+  </window>
+</zk>

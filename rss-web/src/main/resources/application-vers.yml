@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/rss_reader
+    username: postgres
+    password: root
+  jpa:
+    properties:
+      hibernate.temp.use_jdbc_metadata_defaults: false
+      ##hibernate.generate_statistics: true
+
+##logging:
+  ##level:
+    ##org.hibernate.SQL: debug
+    ##org.hibernate.type.descriptor.sql: trace
+    ##org.zkoss: debug

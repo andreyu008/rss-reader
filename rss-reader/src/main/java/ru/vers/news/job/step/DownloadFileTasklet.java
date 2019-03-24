@@ -1,8 +1,5 @@
 package ru.vers.news.job.step;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +16,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.zeroturnaround.zip.ZipUtil;
 import ru.vers.news.domain.enums.Imports;
 import ru.vers.news.exception.ResourceNotFoundException;
 import ru.vers.news.imports.RssProperties;
@@ -28,6 +26,9 @@ import ru.vers.news.support.FileUtils;
 @Component
 public class DownloadFileTasklet implements Tasklet {
 
+  //Tasklet для загрузки в файловую систему пришедший ресурс,
+  // оставил чтобы показать что можно и таким способом получить ресурс в JobConfig.
+
   @Autowired
   private IRssResourceFinder iRssResourceFinder;
   @Autowired
@@ -36,23 +37,19 @@ public class DownloadFileTasklet implements Tasklet {
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
       throws Exception {
-
-    URL feedSource = new URL("http://biathlonrus.com/rss/main-rus.xml");
-    SyndFeedInput input = new SyndFeedInput();
-    SyndFeed feed = input.build(new XmlReader(feedSource));
-
-
-    String nsi = chunkContext.getStepContext().getStepExecution().getJobParameters()
+    String rss = chunkContext.getStepContext().getStepExecution().getJobParameters()
         .getString(Constants.RSS);
-    Resource resource = iRssResourceFinder.findResource(Imports.valueOf(nsi));
-    Path dir = FileUtils.createDirectory(rssProperties.getUploadPath().resolve(nsi));
+    Resource resource = iRssResourceFinder.findResource(Imports.valueOf(rss));
+    Path dir = FileUtils.createDirectory(rssProperties.getUploadPath().resolve(rss));
     Path path = dir.resolve(resource.getFilename());
     Files.walk(dir).filter(e -> !e.equals(dir)).sorted(Comparator.reverseOrder()).map(Path::toFile)
         .forEach(File::delete);
     downloadFile(resource.getURL(), path);
+    //TODO Предусмотреть случай для прихода арихва.
     File zipFile = path.toFile();
-//    ZipUtil.unpack(zipFile, dir.toFile());
-   // Files.delete(path);
+    ZipUtil.unpack(zipFile, dir.toFile());
+    //TODO Удалить.
+    Files.delete(path);
     Path file = Files.list(dir).findFirst().orElseThrow(ResourceNotFoundException::new);
     chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext()
         .put("FILE_NAME", file.toString());

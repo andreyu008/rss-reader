@@ -27,13 +27,18 @@ public class RssProcessor implements ItemProcessor<RefRssDetailsDto, Rss> {
   private RssItemsRepository rssItemsRepository;
 
   @Override
-  public Rss process(RefRssDetailsDto item){
-
+  public Rss process(RefRssDetailsDto item) {
     final RefRssDetails tempRssDetail = this.refRssDetailsRepository
         .findByDescription(item.getChannelDto().getDescription())
         .orElse(new RefRssDetails());
-    RssItems tempRssItems;
+    getRssItem(item, tempRssDetail);
     this.rss = new Rss();
+    this.rss.setRefRssDetails(tempRssDetail);
+    return this.rss;
+  }
+
+  private void getRssItem(RefRssDetailsDto item, RefRssDetails tempRssDetail) {
+    RssItems tempRssItems;
     tempRssDetail.setTitle(item.getChannelDto().getTitle());
     tempRssDetail.setDescription(item.getChannelDto().getDescription());
     tempRssDetail.setLanguage(item.getChannelDto().getLanguage());
@@ -57,8 +62,5 @@ public class RssProcessor implements ItemProcessor<RefRssDetailsDto, Rss> {
       tempRssItems.setLink(rssItems.getLink());
       this.rss.getRssItems().add(tempRssItems);
     }
-    this.rss.setRefRssDetails(tempRssDetail);
-
-    return this.rss;
   }
 }

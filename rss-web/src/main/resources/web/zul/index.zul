@@ -1,0 +1,45 @@
+<zk>
+  <window  apply="org.zkoss.bind.BindComposer"
+    viewModel="@id('vm') @init('ru.vers.news.web.mvvm.RSSViewModel')"
+    hflex="1" vflex="1">
+    <!--<style src="/widgets/miscellaneous/rss_reader/style.css" />-->
+    <borderlayout width="100%" height="100%">
+      <west width="200px" collapsible="true" title="Subscription Title">
+        <vlayout height="100%">
+          <image src="@load(vm.selectedEntryDetails.imageUrl)" width="100%" />
+          <separator/>
+          <listbox id="newsListBox" vflex="1"
+            model="@load(vm.contentList)"
+            width="100%"
+            selectedItem="@bind(vm.selectedEntryDetails)">
+            <template name="model" var="feed">
+              <listitem label="@load(feed.title)"
+                onClick="@command('test')"/>
+            </template>
+          </listbox>
+        </vlayout>
+      </west>
+      <center>
+        <groupbox hflex="1" vflex="1" closable="false" mold="3d">
+
+          <caption label="@load(vm.selectedEntryDetails.title)">
+            <div width="70px"><a sclass="link" href="@load(vm.selectedEntryDetails.link)" target="_zkdemo">Full Article</a></div>
+          </caption>
+          <!--<div hflex="1" vflex="1" style="overflow:auto">
+            <html class="desc" content="@load(vm.selectedItemEntry.description)"  />
+          </div>-->
+          <listbox id="itemsListBox" vflex="1"
+            model="@load(vm.rssItems)"
+            width="100%"
+            selectedItem="@bind(vm.selectedItemEntry)">
+            <template name="model" var="feed2">
+              <listitem label="@load(feed2.title)"
+                onClick="@command('openModalWin', idRssItems = feed2.idRssItems)" />
+            </template>
+          </listbox>
+        </groupbox>
+      </center>
+    </borderlayout>
+
+  </window>
+</zk>

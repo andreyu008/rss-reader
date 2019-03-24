@@ -18,6 +18,7 @@
   <modules>
     <module>migration</module>
     <module>rss-reader</module>
+    <module>rss-web</module>
   </modules>
 
 
