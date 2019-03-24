@@ -1,5 +1,6 @@
 package ru.vers.news.web.mvvm;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.zkoss.bind.annotation.BindingParam;
@@ -26,7 +27,7 @@ public class RSSViewModel {
   @Setter
   private RefRssDetails selectedEntryDetails;
   @Getter
-  private ListModelList<RssItems> rssItems;
+  private List<RssItems> rssItems;
   @Getter
   @Setter
   private RssItems selectedItemEntry;
@@ -34,6 +35,9 @@ public class RSSViewModel {
   private ViewRssDetailsService viewRssDetailsService;
   @WireVariable
   private ViewRssItemsService viewRssItemsService;
+  @Getter
+  @Setter
+  private String keyword;
 
 
   @Init
@@ -43,15 +47,27 @@ public class RSSViewModel {
   }
 
   @Command
-  @NotifyChange({"rssItems", "selectedItemEntry"})
-  public void test(){
-    this.rssItems = new ListModelList<>(this.viewRssItemsService.retrieveRssItems(this.selectedEntryDetails.getIdRssDetail()));
-    System.out.println("stop");
-
+  @NotifyChange("rssItems")
+  public void search() {
+    rssItems = viewRssItemsService.search(keyword);
   }
 
   @Command
-  public void openModalWin(@BindingParam("idRssItems") Long idRssItems){
+  @NotifyChange({"rssItems", "keyword"})
+  public void clear() {
+    getingRssItems();
+    this.keyword = null;
+  }
+
+  @Command
+  @NotifyChange({"rssItems", "selectedItemEntry"})
+  public void getingRssItems() {
+    this.rssItems = new ListModelList<>(
+        this.viewRssItemsService.retrieveRssItems(this.selectedEntryDetails.getIdRssDetail()));
+  }
+
+  @Command
+  public void openModalWin(@BindingParam("idRssItems") Long idRssItems) {
     ViewRssItemModalViewModel.windowItem(idRssItems);
   }
 

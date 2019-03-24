@@ -2,9 +2,8 @@
   <window  apply="org.zkoss.bind.BindComposer"
     viewModel="@id('vm') @init('ru.vers.news.web.mvvm.RSSViewModel')"
     hflex="1" vflex="1">
-    <!--<style src="/widgets/miscellaneous/rss_reader/style.css" />-->
     <borderlayout width="100%" height="100%">
-      <west width="200px" collapsible="true" title="Subscription Title">
+      <west width="200px" collapsible="true" title="Ваши подписки">
         <vlayout height="100%">
           <image src="@load(vm.selectedEntryDetails.imageUrl)" width="100%" />
           <separator/>
@@ -14,7 +13,7 @@
             selectedItem="@bind(vm.selectedEntryDetails)">
             <template name="model" var="feed">
               <listitem label="@load(feed.title)"
-                onClick="@command('test')"/>
+                onClick="@command('getingRssItems')"/>
             </template>
           </listbox>
         </vlayout>
@@ -25,6 +24,12 @@
           <caption label="@load(vm.selectedEntryDetails.title)">
             <div width="70px"><a sclass="link" href="@load(vm.selectedEntryDetails.link)" target="_zkdemo">Full Article</a></div>
           </caption>
+          <div>
+            Keyword:
+            <textbox value="@bind(vm.keyword)" />
+            <button label="Поиск" onClick="@command('search')"/>
+            <button label="Очистить" onClick="@command('clear')"/>
+          </div>
           <!--<div hflex="1" vflex="1" style="overflow:auto">
             <html class="desc" content="@load(vm.selectedItemEntry.description)"  />
           </div>-->
