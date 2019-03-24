@@ -52,6 +52,7 @@ public class RssLoader implements IRssLoader {
       jobParametersBuilder.addString(Constants.RSS, imports.name());
       jobParametersBuilder.addLong(Constants.TIME, System.currentTimeMillis());
       this.jobLauncher.run(job, jobParametersBuilder.toJobParameters());
+      refRssService.saveSuccess(imports);
     } catch (JobExecutionAlreadyRunningException e) {
       throw new UncheckedJobExecutionAlreadyRunningException("Загрузка уже запущена", e);
     } catch (JobRestartException e) {

@@ -20,16 +20,16 @@ COMMENT ON COLUMN news.ref_import_rss.page IS 'Адрес страницы';
 
 insert into news.ref_import_rss
 values (1,
-        'Lenta.ru',
+        'biathlonrus.com',
         'CREATED',
-        'Lenta.ru : Новости',
-        'LENTA',
-        'http://lenta.ru/rss/news');
+        'Союз биатлонистов России',
+        'BIATLON',
+        'http://biathlonrus.com/rss/main-rus.xml');
 
 insert into news.ref_import_rss
 values (2,
-        'habr.com',
+        'russian.rt.com',
         'CREATED',
-        'habr.com : Новости',
-        'HABR',
-        'http://habrahabr.ru/rss/main');
+        'Новости RT на русском языке',
+        'RT',
+        'https://russian.rt.com/rss');

@@ -20,13 +20,12 @@ public class RssWriter implements ItemWriter<Rss> {
   private RssItemsRepository rssItemsRepository;
 
   @Override
-  public void write(List<? extends Rss> items) throws Exception {
+  public void write(List<? extends Rss> items){
     for (final Rss item : items){
       refRssDetailsRepository.save(item.getRefRssDetails());
 
       if (item.getRefRssDetails() != null){
         for (RssItems rssItems : item.getRssItems()) {
-//          item.getRssItems().setIdRssDetail(item.getRefRssDetails().getIdRssDetail());
           rssItems.setIdRssDetail(item.getRefRssDetails().getIdRssDetail());
         }
       }

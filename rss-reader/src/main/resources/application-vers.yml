@@ -29,5 +29,4 @@ imports:
 logging:
   level:
     org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql: trace
-    org.zkoss: debug
+    ##org.hibernate.type.descriptor.sql: trace

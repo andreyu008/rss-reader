@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public enum Imports {
   UNKNOWN,
-  LENTA,
-  HABR;
+  BIATLON,
+  RT;
 
 
   public static Imports from(String imports){

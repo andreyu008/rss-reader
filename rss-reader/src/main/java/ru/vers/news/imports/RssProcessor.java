@@ -12,6 +12,7 @@ import ru.vers.news.domain.RssItems;
 import ru.vers.news.domain.dto.RefRssDetailsDto;
 import ru.vers.news.domain.dto.RssItemsDto;
 import ru.vers.news.repository.RefRssDetailsRepository;
+import ru.vers.news.repository.RssItemsRepository;
 
 @Component
 @StepScope
@@ -22,11 +23,14 @@ public class RssProcessor implements ItemProcessor<RefRssDetailsDto, Rss> {
   private Rss rss;
   @Autowired
   private RefRssDetailsRepository refRssDetailsRepository;
+  @Autowired
+  private RssItemsRepository rssItemsRepository;
 
   @Override
-  public Rss process(RefRssDetailsDto item) throws Exception {
+  public Rss process(RefRssDetailsDto item){
 
-    final RefRssDetails tempRssDetail = this.refRssDetailsRepository.findByDescription(item.getChannelDto().getDescription())
+    final RefRssDetails tempRssDetail = this.refRssDetailsRepository
+        .findByDescription(item.getChannelDto().getDescription())
         .orElse(new RefRssDetails());
     RssItems tempRssItems;
     this.rss = new Rss();
@@ -34,20 +38,25 @@ public class RssProcessor implements ItemProcessor<RefRssDetailsDto, Rss> {
     tempRssDetail.setDescription(item.getChannelDto().getDescription());
     tempRssDetail.setLanguage(item.getChannelDto().getLanguage());
     tempRssDetail.setLink(item.getChannelDto().getLink());
-    tempRssDetail.setImageUrl(item.getChannelDto().getImageDto().getImageUrl());
-    tempRssDetail.setImageTitle(item.getChannelDto().getImageDto().getImageTitle());
-    tempRssDetail.setImageLink(item.getChannelDto().getImageDto().getImageLink());
-    tempRssDetail.setImageWidth(item.getChannelDto().getImageDto().getImageWidth());
-    tempRssDetail.setImageHeight(item.getChannelDto().getImageDto().getImageHeight());
+    tempRssDetail.setImageUrl(item.getChannelDto().getImageDto() != null
+        ? item.getChannelDto().getImageDto().getImageUrl() : null);
+    tempRssDetail.setImageTitle(item.getChannelDto().getImageDto() != null ?
+        item.getChannelDto().getImageDto().getImageTitle() : null);
+    tempRssDetail.setImageLink(item.getChannelDto().getImageDto() != null ?
+        item.getChannelDto().getImageDto().getImageLink() : null);
+    tempRssDetail.setImageWidth(item.getChannelDto().getImageDto() != null ?
+        item.getChannelDto().getImageDto().getImageWidth() : null);
+    tempRssDetail.setImageHeight(item.getChannelDto().getImageDto() != null ?
+        item.getChannelDto().getImageDto().getImageHeight() : null);
 
     for (RssItemsDto rssItems : item.getChannelDto().getRssItemsDto()) {
-      tempRssItems = new RssItems();
+      tempRssItems = this.rssItemsRepository.findByTitle(rssItems.getTitle())
+          .orElse(new RssItems());
       tempRssItems.setTitle(rssItems.getTitle());
       tempRssItems.setDescription(rssItems.getDescription());
       tempRssItems.setLink(rssItems.getLink());
       this.rss.getRssItems().add(tempRssItems);
     }
-
     this.rss.setRefRssDetails(tempRssDetail);
 
     return this.rss;
