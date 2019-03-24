@@ -10,7 +10,6 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import ru.vers.news.domain.Rss;
 import ru.vers.news.domain.dto.RefRssDetailsDto;
 import ru.vers.news.domain.enums.Imports;
+import ru.vers.news.job.step.DownloadFileTasklet;
 import ru.vers.news.job.step.IRssResourceFinder;
 import ru.vers.news.job.step.RssXmlReader;
 
@@ -30,6 +30,7 @@ public class RssJobConfig {
   private static final String READER = "reader";
   private static final String WRITER = "WRITER";
   private static final String READ_WRITE_STEP = "read_write";
+  private static final String DOWNLOAD_FILE_STEP = "DOWNLOAD_FILE_STEP";
   public static final String RSS_JOB = "RSS_JOB";
 
   @Autowired
@@ -39,6 +40,8 @@ public class RssJobConfig {
   @Autowired
   @Qualifier("jpaTransactionManager")
   private PlatformTransactionManager jpaTransactionManager;
+  @Autowired
+  private DownloadFileTasklet downloadFileTasklet;
 
 
   @Bean(READER)
@@ -50,12 +53,29 @@ public class RssJobConfig {
         RefRssDetailsDto.class, "rss");
   }
 
-  @Bean(WRITER)
+  /*@Bean(READER)
+  @StepScope
+  public ItemReader<RefRssDetailsDto> reader(
+      @Value("#{jobExecutionContext['FILE_NAME']}") final String fileName) throws Exception {
+    Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+    marshaller.setClassesToBeBound(RefRssDetailsDto.class);
+    StaxEventItemReader<RefRssDetailsDto> reader = new StaxEventItemReaderBuilder<RefRssDetailsDto>()
+        .name("news")
+        .resource(new FileSystemResource(fileName))
+        .addFragmentRootElements("rss")
+        .unmarshaller(marshaller)
+        .build();
+    reader.afterPropertiesSet();
+    ExecutionContext executionContext = new ExecutionContext();
+    reader.open(executionContext);
+    return reader;
+  }*/
+ /* @Bean(WRITER)
   public JpaItemWriter<Rss> writer() {
     final JpaItemWriter<Rss> jpaItemWriter = new JpaItemWriter<>();
     jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
     return jpaItemWriter;
-  }
+  }*/
 
   /**
    * Шаг для парсинга xml.
@@ -77,11 +97,18 @@ public class RssJobConfig {
         .processor(processor).writer(writer).build();
   }
 
+  @Bean(DOWNLOAD_FILE_STEP)
+  public Step downloadFileStep(final StepBuilderFactory stepBuilderFactory) {
+    return stepBuilderFactory.get(DOWNLOAD_FILE_STEP).tasklet(this.downloadFileTasklet).build();
+
+  }
+
   @Bean(RSS_JOB)
-  public Job rssJob(@Qualifier(READ_WRITE_STEP) final Step step){
+  public Job rssJob(@Qualifier(READ_WRITE_STEP) final Step step/*,
+      @Qualifier(DOWNLOAD_FILE_STEP) final Step downLoadStep*/){
 
     return this.jobBuilderFactory.get(RSS_JOB).incrementer(new RunIdIncrementer())
-        .start(step).build();
+        .start(step)/*.next(step)*/.build();
   }
 
 }

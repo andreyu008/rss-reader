@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class Rss {
 
   private RefRssDetails refRssDetails;
-//  private RssItems rssItems;
+  //private RssItems rssItems;
   private List<RssItems> rssItems = new ArrayList<>();
 
 }

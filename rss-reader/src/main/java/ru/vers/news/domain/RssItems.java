@@ -28,6 +28,8 @@ public class RssItems implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RSS_ITEMS_ID_GENERATOR")
   @Id
   private Long idRssItems;
+  /*@ManyToOne()
+  @JoinColumn(name = "id_rss_detail")*/
   private Long idRssDetail;
   private String title;
   private String description;

@@ -18,6 +18,8 @@ spring:
     job:
       enabled: false
     initialize-schema: always
+rss:
+  upload: E:/
 
 imports:
   scheduled:
