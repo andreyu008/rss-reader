@@ -3,8 +3,16 @@
     viewModel="@id('vm') @init('ru.vers.news.web.mvvm.modal.ViewRssItemModalViewModel')"
     hflex="1" vflex="1">
     <caption label="@load(vm.item.title)"></caption>
+    <button label="Читать далее с изображениями" onClick="@command('parsePageFull')" visible="@load(vm.flagVisibleDesription)"/>
+    <button label="Читать далее только текст" onClick="@command('parsePageOnlyRext')" visible="@load(vm.flagVisibleDesription)"/>
+    <button label="Назад" onClick="@command('backPage')" visible="@load(vm.flagVisibleFullPage)"/>
     <!--<style src="/widgets/miscellaneous/rss_reader/style.css" />-->
+    <div visible="@load(vm.flagVisibleDesription)">
     <html class="desc" content="@load(vm.item.description)"/>
+    </div>
+    <div visible="@load(vm.flagVisibleFullPage)">
+    <html class="desc" content="@load(vm.page)"/>
+    </div>
 
 
   </window>
