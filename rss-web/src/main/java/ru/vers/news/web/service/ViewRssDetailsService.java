@@ -12,6 +12,10 @@ public class ViewRssDetailsService {
   @Autowired
   private RefRssDetailsRepository refRssDetailsRepository;
 
+  /**
+   * Весь список подписок.
+   * @return список подписок.
+   */
   public List<RefRssDetails> retrieveData(){
     return this.refRssDetailsRepository.findAll();
   }

@@ -46,12 +46,18 @@ public class RSSViewModel {
 
   }
 
+  /**
+   * Команда для поиска тайтла.
+   */
   @Command
   @NotifyChange("rssItems")
   public void search() {
     rssItems = viewRssItemsService.search(keyword);
   }
 
+  /**
+   * Очистка поля ввода
+   */
   @Command
   @NotifyChange({"rssItems", "keyword"})
   public void clear() {
@@ -59,6 +65,9 @@ public class RSSViewModel {
     this.keyword = null;
   }
 
+  /**
+   * Команда для получения списка тайтлов.
+   */
   @Command
   @NotifyChange({"rssItems", "selectedItemEntry"})
   public void getingRssItems() {
@@ -66,6 +75,10 @@ public class RSSViewModel {
         this.viewRssItemsService.retrieveRssItems(this.selectedEntryDetails.getIdRssDetail()));
   }
 
+  /**
+   * Команда для открытия тайтла в модальном окне.
+   * @param idRssItems
+   */
   @Command
   public void openModalWin(@BindingParam("idRssItems") Long idRssItems) {
     ViewRssItemModalViewModel.windowItem(idRssItems);

@@ -22,10 +22,10 @@
         <groupbox hflex="1" vflex="1" closable="false" mold="3d">
 
           <caption label="@load(vm.selectedEntryDetails.title)">
-            <div width="70px"><a sclass="link" href="@load(vm.selectedEntryDetails.link)" target="_zkdemo">Full Article</a></div>
+            <div width="70px"><a sclass="link" href="@load(vm.selectedEntryDetails.link)" target="_zkdemo">Ссылка на источник</a></div>
           </caption>
           <div>
-            Keyword:
+            Поиск:
             <textbox value="@bind(vm.keyword)" />
             <button label="Поиск" onClick="@command('search')"/>
             <button label="Очистить" onClick="@command('clear')"/>

@@ -13,19 +13,34 @@ public class ViewRssItemsService {
   @Autowired
   private RssItemsRepository rssItemsRepository;
 
+  /**
+   * Получение списка тайтлов.
+   * @param idRssDetails id записи подписки.
+   * @return список тайтлов.
+   */
   public List<RssItems> retrieveRssItems(Long idRssDetails) {
     return this.rssItemsRepository.findByIdRssDetailOrderByIdRssItemsAsc(idRssDetails);
 
   }
 
+  /**
+   * Получение тайтла.
+   * @param idRssItems идендификатор тайтла.
+   * @return тайтл.
+   */
   public RssItems getItem(Long idRssItems) {
     return this.rssItemsRepository.findById(idRssItems).get();
   }
 
+  /**
+   * Поиск тайтла из всего списка.
+   * @param keyword значание введенное в строку поиска
+   * @return результат поиска.
+   */
   public List<RssItems> search(String keyword){
-    List<RssItems> itemsList = new LinkedList<>();
+    List<RssItems> itemsList;
     itemsList = this.rssItemsRepository.findAll();
-    List<RssItems> result = new LinkedList<RssItems>();
+    List<RssItems> result = new LinkedList<>();
     if (keyword==null || "".equals(keyword)){
       result = itemsList;
     }else{
