@@ -31,8 +31,8 @@ public class RssProcessor implements ItemProcessor<RefRssDetailsDto, Rss> {
     final RefRssDetails tempRssDetail = this.refRssDetailsRepository
         .findByDescription(item.getChannelDto().getDescription())
         .orElse(new RefRssDetails());
-    getRssItem(item, tempRssDetail);
     this.rss = new Rss();
+    getRssItem(item, tempRssDetail);
     this.rss.setRefRssDetails(tempRssDetail);
     return this.rss;
   }

@@ -154,28 +154,6 @@
       <artifactId>migration</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>ru.vers</groupId>
-      <artifactId>zrss</artifactId>
-      <version>0.9.5</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/localjar/zrss-0.9.5.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>ru.vers</groupId>
-      <artifactId>jdom</artifactId>
-      <version>0.9</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/localjar/jdom.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>ru.vers</groupId>
-      <artifactId>rome</artifactId>
-      <version>0.9</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/localjar/rome-0.9.jar</systemPath>
-    </dependency>
-
   </dependencies>
 
   <build>
